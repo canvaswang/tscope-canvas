@@ -9,7 +9,7 @@ class Keyword < ActiveRecord::Base
       config.access_token_secret = "3RZoADuhzIVcPvsy90bNs6cLLoE3iXgHBOXwxRoLyBitS"
     end
 
-    client.search(self.word, result_type: "recent").take(10).collect do |tweet|
+    client.search(self.word, result_type: "recent").take(100).collect do |tweet|
       new_tweet = Tweet.new
       new_tweet.tweet_id = tweet.id.to_s
       new_tweet.tweet_created_at = tweet.created_at
@@ -25,4 +25,11 @@ class Keyword < ActiveRecord::Base
       new_tweet.save
     end
   end
+
+  def self.grab_all_twitts
+    Keyword.all.each do |keyword|
+      keyword.grab_twitts
+    end
+  end
+
 end
